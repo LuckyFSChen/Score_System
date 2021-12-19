@@ -13,7 +13,19 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('回到主畫面') }}
+                    </x-jet-nav-link>
+                </div>
+                @if(Auth::user() == '')
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('Games') }}" :active="request()->routeIs('Games')">
+                        {{ __('創建比賽') }}
+                    </x-jet-nav-link>
+                </div>
+                @endif
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('score') }}" :active="request()->routeIs('score')">
+                        {{ __('比賽評分') }}
                     </x-jet-nav-link>
                 </div>
             </div>

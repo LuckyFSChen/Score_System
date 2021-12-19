@@ -21,3 +21,11 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/Games', function () {
+    return view('Games');
+})->name('Games');
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/score', function () {
+    return view('score');
+})->name('score');
