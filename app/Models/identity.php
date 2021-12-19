@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class identity extends Model
 {
     use HasFactory;
+
+    protected  $fillable = [
+        'name',
+    ];
+
+    public function users(){
+        return $this->hasMany('App\Models\User');
+    }
 }

@@ -16,7 +16,7 @@
                         {{ __('回到主畫面') }}
                     </x-jet-nav-link>
                 </div>
-                @if(Auth::user() == '')
+                @if(Auth::user()->identity() == '')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('Games') }}" :active="request()->routeIs('Games')">
                         {{ __('創建比賽') }}

@@ -59,4 +59,12 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function identity() {
+        return $this->hasOne('App\Models\identity');
+    }
+
+    public function games() {
+        return $this->hasMany('App\Models\game');
+    }
 }
