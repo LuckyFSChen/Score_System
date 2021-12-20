@@ -13,7 +13,7 @@ class AddTeamDetailsDataHasTeamDetailsTitleId extends Migration
      */
     public function up()
     {
-        Schema::table('Team_details_datas', function(Blueprint $table){
+        Schema::table('team_details_datas', function(Blueprint $table){
             $table->foreignId("team_details_title_id");
         });
     }
