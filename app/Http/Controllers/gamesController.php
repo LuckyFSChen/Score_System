@@ -9,4 +9,7 @@ class gamesController extends Controller
     public function index(){
         return view(game.games);
     }
+    public function score(){
+        return view(game.score);
+    }
 }

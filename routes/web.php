@@ -28,5 +28,5 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/games', function () {
 })->name('games');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/score', function () {
-    return view('score');
+    return view('game.score');
 })->name('score');
