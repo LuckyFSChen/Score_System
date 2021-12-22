@@ -13,6 +13,8 @@ class team extends Model
         return $this->belongsTo('App\Models\game');
     }
 
+
+
     public function team_details_datas(){
         return $this->hasMany('App\Models\team_details_data');
     }

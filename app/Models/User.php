@@ -60,6 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+
     public function identity() {
         return $this->hasOne('App\Models\identity');
     }

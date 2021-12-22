@@ -9,12 +9,12 @@ class game extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+    ];
+
     public function teams() {
         return $this->hasMany('App\Models\team');
-    }
-
-    public function createAt(){
-        return $this->belongsTo('App\Models\User');
     }
 
     public function adjudicators()
@@ -26,5 +26,8 @@ class game extends Model
         return $this->hasMany('App\Models\team_details_title');
     }
 
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
 
 }
