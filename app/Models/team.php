@@ -9,6 +9,10 @@ class team extends Model
 {
     use HasFactory;
 
+    protected $fillable =[
+        'game_id','serial_num','name'
+    ];
+
     public function game(){
         return $this->belongsTo('App\Models\game');
     }

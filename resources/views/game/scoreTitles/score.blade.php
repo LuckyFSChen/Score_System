@@ -9,7 +9,7 @@
                 @csrf
                 <input class="ml-6 px-2 py-2 rounded" type="text" name="name"  placeholder="請輸入欄位名稱..." value="" />
                 <input class="ml-6 px-2 py-2 rounded" type="number" name="percentage" placeholder="請輸入百分比...(不含%)" value="" />(%)
-                <button class="ml-4 px-4 py-4 bg-gray-200 rounded" type="submit">
+                <button  type="submit">
                     新增成績欄位
                 </button>
             </form>

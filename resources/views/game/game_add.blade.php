@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center">
             <h4 class="font-semi bold text-2xl text-gray-800 leading-tight">
-                {{ __('比賽列表 > 創建比賽') }}s
+                {{ __('比賽列表 > 創建比賽') }}
 
             </h4>
         </div>
@@ -18,7 +18,7 @@
                     </ul>
                 </div>
             @endif
-            <form method="POST" action="{{ route('games.add') }}">
+            <form method="POST" action="{{ route('games.store') }}">
                 @csrf
 
                 <div>

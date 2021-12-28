@@ -1,0 +1,50 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex items-center">
+            <h4 class="font-semi bold text-2xl text-gray-800 leading-tight">
+                {{ __('比賽列表 > 評審人員 > 新增評審人員帳號') }}
+
+            </h4>
+        </div>
+    </x-slot>
+    <div class="py-12">
+        <div class="max-w-xl mx-auto sm:px-2 lg:px-8">
+            @if($errors->any())
+                <div class="bg-red-500 text-red-100 font-thin rounded">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <form method="POST" action="{{ route('adjudicator.register',$id) }}">
+                @csrf
+
+                <div>
+                    <div>
+                        <x-jet-label for="name" value="{{ __('名稱') }}" />
+                        <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+                    </div>
+        
+                    <div class="mt-4">
+                        <x-jet-label for="email" value="{{ __('Email') }}" />
+                        <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+                    </div>
+        
+                    <div class="mt-4">
+                        <x-jet-label for="password" value="{{ __('密碼') }}" />
+                        <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                    </div>
+                </div>
+
+
+                <div class="flex items-center justify-center mt-4">
+                    <x-jet-button class="ml-4">
+                        {{ __('創建') }}
+                    </x-jet-button>
+                </div>
+            </form>
+        </div>
+    </div>
+</x-app-layout>

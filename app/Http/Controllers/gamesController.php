@@ -21,46 +21,14 @@ class gamesController extends Controller
         return view('game.games', ['games' => $games]);
     }
 
-    public function import($game_id){
-        $reader = Excel::Load(request()->file('file'));
-        $header_Row = $reader->first()->keys()->toArray();
-        foreach($header_Row as $header){
-            if($header != "隊伍編號" || $header != "隊伍名稱"){
-                $content = [
-                    'name' => $header
-                ];
-                auth()->user()->games()->find($game_id)->team_details_titles()->create($content);
-            }
-        }
-        $isFirst = true;
-        foreach($reader as $row){
 
-            if ($isFirst){
-                $isFirst = false;
-                continue;
-            }
-
-            $content = [
-                'serial_num' => $row['隊伍編號'],
-                'name' => $row['隊伍名稱']
-            ];
-
-            auth()->user()->games()->find($game_id)->team()->create($content);
-
-            foreach($row as $row_data){
-                auth()->user()->games()->find($game_id)->team()->team_details_datas()->where('name', $row_data->keys())->create($row_data);
-            }
-        }
-
-        return redirect()->route('games');
-    }
 
     public function addPage()
     {
         return view('game.game_add');
     }
 
-    public function add(Request $request)
+    public function store(Request $request)
     {
         $content = $request->validate([
             'name' => 'required',
@@ -91,6 +59,24 @@ class gamesController extends Controller
     public function score()
     {
         return view('game.score');
+    }
+
+    public function close_game($id){
+        $game = auth()->user()->games()->find($id);
+        $game->enabled = 0;
+        $game->update();
+        return redirect()->route('games');
+    }
+    public function open_game($id){
+        $game = auth()->user()->games()->find($id);
+        $game->enabled = 1;
+        $game->update();
+        return redirect()->route('games');
+    }
+
+    public function destroy($id){
+        auth()->user()->games()->find($id)->delete();
+        return redirect()->route('games');
     }
 
 }

@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Imports\TeamsImport;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebstie\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\HeadingRowImport;
 
 class teamController extends Controller
 {
@@ -13,7 +18,22 @@ class teamController extends Controller
      */
     public function index($game_id)
     {
-        return view('game.team');
+        $teams = auth()->user()->games()->find($game_id)->teams()->get();
+        return view('game.team.team', ['teams' => $teams,'game_id' => $game_id]);
+    }
+
+    public function import(Request $request,$game_id){
+        auth()->user()->games()->find($game_id)->teams()->delete();
+        $teams = auth()->user()->games()->find($game_id)->teams()->get();
+        $teamsImportClass = new TeamsImport($game_id);
+        Excel::import($teamsImportClass, $request->file);
+        return redirect()->route('team.index', ['teams' => $teams,'game_id' => $game_id]);
+    }
+
+    public function clear_teams($game_id){
+        auth()->user()->games()->find($game_id)->teams()->delete();
+        $teams = auth()->user()->games()->find($game_id)->teams()->get();
+        return redirect()->route('team.index', ['teams' => $teams,'game_id' => $game_id]);
     }
 
     /**
