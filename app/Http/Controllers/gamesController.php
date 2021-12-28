@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\game;
+use App\Models\score_title;
 use Illuminate\Http\Request;
 
 class gamesController extends Controller
@@ -54,7 +55,7 @@ class gamesController extends Controller
         return redirect()->route('games');
     }
 
-    public function add_page()
+    public function addPage()
     {
         return view('game.game_add');
     }
@@ -71,8 +72,10 @@ class gamesController extends Controller
         return redirect()->route('games');
     }
 
-    public function edit_page($game_id){
-        return view('game.edit', ['id' => $game_id]);
+
+    public function editPage($game_id){
+        return view("game.edit", ["id" => $game_id]);
+//        return view('game.edit', ['id' => $game_id]);
     }
 
     public function edit(Request $request, $id){
@@ -85,19 +88,6 @@ class gamesController extends Controller
 
         return redirect()->route('games');
     }
-
-    public function score_page($game_id){
-        return view('game.score');
-    }
-
-    public function adjudicator_page($game_id){
-        return view('game.adjudicator');
-    }
-
-    public function team_page($game_id){
-        return view('game.team');
-    }
-
     public function score()
     {
         return view('game.score');

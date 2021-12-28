@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateScoreTitlesTable extends Migration
+class AddSoftDeleteToScoreTitleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateScoreTitlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('score_titles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('game_id');
-            $table->string('name');
-            $table->decimal('percentage');
-            $table->timestamps();
+        Schema::table('score_titles', function (Blueprint $table) {
+            $table->softDeletes();
         });
     }
 
@@ -29,6 +25,8 @@ class CreateScoreTitlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('score_titles');
+        Schema::table('score_titles', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

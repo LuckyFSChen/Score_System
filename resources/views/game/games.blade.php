@@ -5,8 +5,9 @@
                 {{ __('比賽列表') }}
 
             </h4>
+
             <div class="ml-6 bg-gray-200 rounded">
-                <a class="text-sm p-2" href="{{ route('game_add_page') }}">創建比賽</a>
+                <a class="text-sm p-2" href="{{ route('games.addPage') }}">創建比賽</a>
             </div>
         </div>
     </x-slot>
@@ -18,10 +19,10 @@
                     <div class="p-6">
                         <p class="font-sans ">{{ $game->name }}</p>
                         <div class="w-auto py-2 ml-6 mt-2">
-                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('games.edit_page',$game->id) }}">比賽資訊</a>
-                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('games.score_page',$game->id) }}">成績欄位</a>
-                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('games.adjudicator_page',$game->id) }}">評審人員</a>
-                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('games.team_page',$game->id) }}">隊伍資訊</a>
+                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('games.editPage',[ 'game_id' => $game->id]) }}">比賽資訊</a>
+                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('scoreTitles.index',$game->id) }}">成績欄位</a>
+                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('adjudicator.index',$game->id) }}">評審人員</a>
+                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('team.index',$game->id) }}">隊伍資訊</a>
                             <a class="text-sm p-2 ml-4"> 建立時間 {{ $game->created_at }} / 更新時間 {{ $game->updated_at }} </a>
 
                         </div>

@@ -16,4 +16,8 @@ class adjudicator extends Model
     public function user(){
         return $this->belongsTo('App\Models\User');
     }
+
+    public function scores(){
+        return $this->hasMany('App\Models\game_score');
+    }
 }

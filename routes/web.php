@@ -23,32 +23,38 @@ Route::group(['middleware' => 'auth'], function(){
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/games',[\App\Http\Controllers\gamesController::class,'index']
+    Route::get('/games/index',[\App\Http\Controllers\gamesController::class,'index']
     )->name('games');
 
-
-    Route::get('/games/add',[\App\Http\Controllers\gamesController::class,'game_add_page']
-    )->name('game_add_page');
-
-    Route::post('/games/add',[\App\Http\Controllers\gamesController::class,'game_add']
-    )->name('game_add');
-
-    Route::get('/score',[\App\Http\Controllers\gamesController::class,'score']
+    Route::get('/games/score',[\App\Http\Controllers\gamesController::class,'score']
     )->name('score');
 
-    Route::get('/edit/{game_id}',[\App\Http\Controllers\gamesController::class,'edit_page']
-    )->name('games.edit_page');
+    Route::get('/games/addPage',[\App\Http\Controllers\gamesController::class,'addPage']
+    )->name('games.addPage');
 
-    Route::post('/edit/{id}',[\App\Http\Controllers\gamesController::class,'edit']
+    Route::get('/game/edit/{game_id}',[\App\Http\Controllers\gamesController::class,'editPage']
+    )->name('games.editPage');
+
+    Route::post('/game/edit/{id}',[\App\Http\Controllers\gamesController::class,'edit']
     )->name('game.edit');
 
-    Route::get('/score/{game_id}',[\App\Http\Controllers\gamesController::class,'score_page']
-    )->name('games.score_page');
+    
 
-    Route::get('/adjudicator/{game_id}',[\App\Http\Controllers\gamesController::class,'adjudicator_page']
-    )->name('games.adjudicator_page');
+    Route::resource('scoreTitles','\App\Http\Controllers\scoreTitlesController')->only(['create','destroy']);
 
-    Route::get('/team_page/{game_id}',[\App\Http\Controllers\gamesController::class,'team_page']
-    )->name('games.team_page');
+    Route::post('/scoreTitles/store/{game_id}',[\App\Http\Controllers\scoreTitlesController::class,'store']
+    )->name('scoreTitles.store');
+
+    Route::get('/scoreTitles/index/{game_id}',[\App\Http\Controllers\scoreTitlesController::class,'index']
+    )->name('scoreTitles.index');
+
+    Route::get('/scoreTitles/{game_id}/{id}',[\App\Http\Controllers\scoreTitlesController::class,'edit'])
+    ->name('scoreTitles.edit');
+
+    Route::post('/scoreTitles/update/{id}',[\App\Http\Controllers\scoreTitlesController::class,'update'])
+    ->name('scoreTitles.update');
+
+    Route::resource('adjudicator','\App\Http\Controllers\adjudicatorController');
+    Route::resource('team','\App\Http\Controllers\teamController');
 });
 

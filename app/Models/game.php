@@ -30,4 +30,8 @@ class game extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function score_titles(){
+        return $this->hasMany('App\Models\score_title');
+    }
+
 }

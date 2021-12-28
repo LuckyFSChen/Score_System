@@ -15,6 +15,10 @@ class CreateGameScoresTable extends Migration
     {
         Schema::create('game_scores', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('team_id');
+            $table->foreignId('score_titles_id');
+            $table->foreignId('adjudicators_id');
+            $table->decimal('score');
             $table->timestamps();
         });
     }
