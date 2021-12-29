@@ -71,7 +71,8 @@ Route::group(['middleware' => 'auth'], function(){
     /**
      * adjudicator
      */
-    Route::resource('adjudicator','\App\Http\Controllers\adjudicatorController')->only(['destroy']);
+    Route::delete('/adjudicator/index/{game_id}/{id}',[\App\Http\Controllers\adjudicatorController::class,'destroy']
+    )->name('adjudicator.destroy');
 
     Route::get('/adjudicator/index/{game_id}',[\App\Http\Controllers\adjudicatorController::class,'index']
     )->name('adjudicator.index');

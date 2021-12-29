@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use App\Models\game;
 use App\Models\adjudicator;
 
 
@@ -39,22 +40,22 @@ class adjudicatorController extends Controller
     }
 
     public function find_adjudicator(Request $request,$game_id){
-        $adjudicator_info = User::where([
-            'email' => $request->email]);
-        
-        if (adjudicator::where(
-            [
-                'user_id' => $adjudicator_info->first()->id ,
-                'game_id' => $game_id
-            ])->count() > 0) {
-            return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號已是當場比賽評審！');
+        $user = User::where('email',$request->email);
+        if (isset($user->first()->id)){
+            $adjudicator = adjudicator::where('user_id',$user->first()->id);
+            if ($adjudicator->count() == 0){
+                $user->first()->adjudicator()->create();
+            }
+            $adjudicator = adjudicator::where('user_id',$user->first()->id)->first();
+
+            if (empty($adjudicator->games()->find($game_id))){
+                $this->store($adjudicator,$game_id);
+                return redirect()->route('adjudicator.index',["game_id" => $game_id]);
+            }else{
+                return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號已是當場比賽評審！');
+            }
         }
-        
-        if($adjudicator_info->count() == 1)
-        {
-            $this->store($adjudicator_info->first()->id,$game_id);
-        }
-        return redirect()->route('adjudicator.index',["game_id" => $game_id]);
+        return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','查無此帳號');
     }
 
     public function register_adjudicator(Request $request,$game_id)
@@ -65,9 +66,10 @@ class adjudicatorController extends Controller
             'password' => ['required'],
         ]);
         $content['password'] = Hash::make($content['password']);
-        $usersOverriding = User::factory()->create($content);
 
-        $this->store($usersOverriding['id'],$game_id);
+        $user = User::factory()->create($content);
+        $adjudicator = $user->adjudicator()->create();
+        $this->store($adjudicator,$game_id);
 
         return redirect()->route('adjudicator.index',["game_id" => $game_id]);
     }
@@ -78,12 +80,9 @@ class adjudicatorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($user_id,$game_id)
+    public function store($adjudicator,$game_id)
     {
-        $content = [
-            'user_id' => $user_id
-        ];
-        auth()->user()->games()->find($game_id)->adjudicators()->create($content);
+        auth()->user()->games()->find($game_id)->adjudicators()->save($adjudicator);
         return redirect()->route('adjudicator.index',["game_id" => $game_id]);
     }
 
@@ -127,10 +126,10 @@ class adjudicatorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($game_id,$id)
     {
-        $game_id = adjudicator::find($id)->game_id;
-        auth()->user()->games()->find($game_id)->adjudicators()->find($id)->delete();
+        $adjudicator = adjudicator::find($id);
+        auth()->user()->games()->find($game_id)->adjudicators()->find($adjudicator)->delete();
         return redirect()->route('adjudicator.index',["game_id" => $game_id]);
     }
 }

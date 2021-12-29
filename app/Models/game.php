@@ -12,8 +12,12 @@ class game extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'name','adjudciator_games_id'
     ];
+
+    public static function find($game_id)
+    {
+    }
 
     public function teams() {
         return $this->hasMany('App\Models\team');
@@ -21,7 +25,7 @@ class game extends Model
 
     public function adjudicators()
     {
-        return $this->hasMany('App\Models\adjudicator');
+        return $this->belongsToMany('App\Models\adjudicator');
     }
 
     public function team_details_titles(){

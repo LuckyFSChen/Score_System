@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\adjudicator;
 use App\Models\game;
 use App\Models\score_title;
 use Illuminate\Http\Request;
@@ -21,7 +22,11 @@ class gamesController extends Controller
         return view('game.games', ['games' => $games]);
     }
 
-
+    public function score()
+    {
+        $user_id = auth()->user()->games()->all();
+        return view('score.score',['games' => $games , ['user_id', $user_id]]);
+    }
 
     public function addPage()
     {
@@ -56,10 +61,7 @@ class gamesController extends Controller
 
         return redirect()->route('games');
     }
-    public function score()
-    {
-        return view('game.score');
-    }
+
 
     public function close_game($id){
         $game = auth()->user()->games()->find($id);

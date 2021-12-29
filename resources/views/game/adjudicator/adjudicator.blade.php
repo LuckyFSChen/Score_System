@@ -41,7 +41,7 @@
 
         @foreach($adjudicators as $adjudicator)
             <div class="mt-4 flex bg-white overflow-hidden shadow-xl sm:rounded-lg items-center">
-                
+
                 <div class="p-6">
                     <div class="font-semibold text-lg">使用者名稱</div>
                     <div class="font-semibold">{{ $adjudicator->user()->first()->name }}</div>
@@ -50,11 +50,11 @@
                     <div class="font-semibold text-lg">Email</div>
                     <div class="font-semibold">{{ $adjudicator->user()->first()->email }}</div>
                 </div>
-                
-                
+
+
                 <div class="">
 
-                    <form action="{{ route('adjudicator.destroy',$adjudicator->id) }}" method="post">
+                    <form action="{{ route('adjudicator.destroy',['id'=>$adjudicator->id,'game_id'=>$id]) }}" method="post">
                         @csrf
                         @method('delete')
                         <button type="submit" class="text-sm p-2 bg-red-600 text-white rounded ml-4">刪除</button>
