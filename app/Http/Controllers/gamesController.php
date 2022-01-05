@@ -24,8 +24,9 @@ class gamesController extends Controller
 
     public function score()
     {
-        $user_id = auth()->user()->games()->all();
-        return view('score.score',['games' => $games , ['user_id', $user_id]]);
+        $games = auth()->user()->adjudicator()->first()->games()->get();
+
+        return view('score.score',['games' => $games ]);
     }
 
     public function addPage()
