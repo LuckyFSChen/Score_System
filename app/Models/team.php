@@ -21,7 +21,7 @@ class team extends Model
         return $this->hasMany('App\Models\team_details_data');
     }
 
-    public function game_scores(){
-        return $this->hasMany('App\Models\game_scores');
+    public function game_score(){
+        return $this->hasMany('App\Models\game_score');
     }
 }

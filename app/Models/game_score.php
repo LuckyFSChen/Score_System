@@ -9,6 +9,10 @@ class game_score extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'team_id','score_titles_id','score'
+    ];
+
     public function team(){
         return $this->belongsTo('App\Models\team');
     }

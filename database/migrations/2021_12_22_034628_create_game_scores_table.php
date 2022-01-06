@@ -18,7 +18,7 @@ class CreateGameScoresTable extends Migration
             $table->foreignId('team_id');
             $table->foreignId('score_titles_id');
             $table->foreignId('adjudicators_id');
-            $table->decimal('score');
+            $table->decimal('score',8,4);
             $table->timestamps();
         });
     }

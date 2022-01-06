@@ -26,8 +26,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/games/index',[\App\Http\Controllers\gamesController::class,'index']
     )->name('games');
 
-    Route::get('/games/score',[\App\Http\Controllers\gamesController::class,'score']
-    )->name('score');
+   
 
     Route::POST('/games/store',[\App\Http\Controllers\gamesController::class,'store']
     )->name('games.store');
@@ -101,5 +100,21 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::post('/team/clear/{game_id}',[\App\Http\Controllers\teamController::class,'clear_teams']
     )->name('team.clear');
+
+    /**
+     * score
+     */
+
+    Route::get('/score',[\App\Http\Controllers\scoreController::class,'index']
+    )->name('score');
+
+    Route::get('/score/{game_id}/show',[\App\Http\Controllers\scoreController::class,'show']
+    )->name('score.score');
+
+    Route::get('/score/{game_id}/list',[\App\Http\Controllers\scoreController::class,'show_list']
+    )->name('score.list');
+
+    Route::post('/score/{game_id}/store',[\App\Http\Controllers\scoreController::class,'store'])
+    ->name('score.store');
 });
 

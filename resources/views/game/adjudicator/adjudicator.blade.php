@@ -8,12 +8,12 @@
             <div class="mt-4 flex">
                 <form  method="POST" action="{{ route('adjudicator.find',$id) }}">
                     @csrf
-                    <input type="email" class="px-2 py-2 rounded" placeholder="請輸入評審email..." name="email" id="email">
-                    <button type="submit" class="ml-4 px-4 py-4 bg-gray-200 rounded">尋找評審並新增</button>
+                    <input type="email" class="px-2 py-2 rounded border border-gray-400" placeholder="請輸入評審email..." name="email" id="email">
+                    <button type="submit" class="ml-4 px-4 py-4 bg-gray-300 rounded">尋找評審並新增</button>
                 </form>
                 <form  method="GET" action="{{ route('adjudicator.create',$id) }}">
                     @csrf
-                    <button type="submit" class="ml-4 px-4 py-4 bg-gray-200 rounded">新增評審帳號</button>
+                    <button type="submit" class="ml-4 px-4 py-4 bg-gray-300 rounded">新增評審帳號</button>
                 </form>
             </div>
         </div>

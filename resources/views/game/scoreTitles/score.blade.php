@@ -7,9 +7,9 @@
             </h4>
             <form method="post" action="{{ route("scoreTitles.store",['game_id' => $id]) }}">
                 @csrf
-                <input class="ml-6 px-2 py-2 rounded" type="text" name="name"  placeholder="請輸入欄位名稱..." value="" />
-                <input class="ml-6 px-2 py-2 rounded" type="number" name="percentage" placeholder="請輸入百分比...(不含%)" value="" />(%)
-                <button  type="submit">
+                <input class="ml-6 px-2 py-2 rounded border border-gray-400" type="text" name="name"  placeholder="請輸入欄位名稱..." value="" />
+                <input class="ml-6 px-2 py-2 rounded border border-gray-400" type="number" name="percentage" placeholder="請輸入百分比...(不含%)" value="" />(%)
+                <button  type="submit" class="ml-4 bg-indigo-300 rounded p-2">
                     新增成績欄位
                 </button>
             </form>
@@ -43,8 +43,8 @@
                         @csrf
                         @method('delete')
 
-                        <a class="text-sm p-2 bg-gray-500 rounded ml-4" href="{{ route('scoreTitles.edit',['game_id' => $id , 'id' => $score->id]) }}">修改</a>
-                        <button type="submit" class="text-sm p-2 bg-red-600 rounded ml-4">刪除</button>
+                        <a class="text-sm p-2 bg-gray-400 rounded ml-4" href="{{ route('scoreTitles.edit',['game_id' => $id , 'id' => $score->id]) }}">修改</a>
+                        <button type="submit" class="text-sm p-2 bg-red-400 rounded ml-4">刪除</button>
                     </form>
 
                 </div>

@@ -22,12 +22,6 @@ class gamesController extends Controller
         return view('game.games', ['games' => $games]);
     }
 
-    public function score()
-    {
-        $games = auth()->user()->adjudicator()->first()->games()->get();
-
-        return view('score.score',['games' => $games ]);
-    }
 
     public function addPage()
     {
