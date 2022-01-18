@@ -81,6 +81,10 @@ class scoreController extends Controller
         $titles = auth()->user()->adjudicator()->first()->games()->find($game_id)->score_titles()->get();
         $teams = auth()->user()->adjudicator()->first()->games()->find($game_id)->teams()->get();
         $scores = [];
+        $percentage = [];
+        foreach($titles as $title){
+            $percentage[$title->id] = $title->percentage;
+        }
         foreach($teams as $team_value){
             foreach($titles as $title_value){
                 
@@ -96,7 +100,7 @@ class scoreController extends Controller
                 
             }
         }
-        return view('score.show',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores]);
+        return view('score.show',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores ,'percentage' => $percentage]);
     }
 
     public function show_list($game_id)
@@ -105,6 +109,7 @@ class scoreController extends Controller
         $titles = auth()->user()->adjudicator()->first()->games()->find($game_id)->score_titles()->get();
         $teams = auth()->user()->adjudicator()->first()->games()->find($game_id)->teams()->get();
         $scores = [];
+        
         foreach($teams as $team_value){
             foreach($titles as $title_value){
                 
