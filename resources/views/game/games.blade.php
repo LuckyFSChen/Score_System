@@ -23,15 +23,16 @@
                             <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('scoreTitles.index',$game->id) }}">成績欄位</a>
                             <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('adjudicator.index',$game->id) }}">評審人員</a>
                             <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('team.index',$game->id) }}">隊伍資訊</a>
+                            <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('admin_score.list',$game->id) }}">結果查詢</a>
                             @if($game->enabled)
-                                <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('game.close',$game->id) }}">關閉比賽</a>
+                                <a class="text-sm p-2 bg-gray-200 rounded ml-4 bg-rose-500 text-white" href="{{ route('game.close',$game->id) }}">關閉比賽</a>
                             @else
-                                <a class="text-sm p-2 bg-gray-200 rounded ml-4" href="{{ route('game.open',$game->id) }}">開啟比賽</a>
+                                <a class="text-sm p-2 bg-gray-200 rounded ml-4 bg-emerald-500 text-white" href="{{ route('game.open',$game->id) }}">開啟比賽</a>
                             @endif
 
                             <form method="post" class="" action="{{ route('game.destroy',$game->id) }}">
                                 @csrf
-                                <button class="text-sm p-2 bg-red-500 rounded ml-4" type="submit">移除比賽</button>
+                                <button class="text-sm p-2 bg-rose-500 text-white rounded ml-4" type="submit">移除比賽</button>
                             </form>
                             <a class="text-sm p-2 ml-4"> 建立時間 {{ $game->created_at }} / 更新時間 {{ $game->updated_at }} </a>
 

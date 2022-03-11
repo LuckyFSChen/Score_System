@@ -18,7 +18,7 @@
             <div class="ml-6 bg-gray-200 rounded">
                 <form action="{{ route('team.import',$game_id) }}" id="import" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <label class="text-sm px-4" onclick="javascript:$('#file').click();">匯入隊伍</label>
+                    <label class="text-sm px-4" onclick="document.getElementById('file').click()">匯入隊伍</label>
                     <input type="file" name="file" id="file" onchange="upload(this);" hidden>
                 </form>
 

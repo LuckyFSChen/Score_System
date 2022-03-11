@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\adjudicator;
+use App\Models\game;
+use App\Models\score_title;
+use App\Models\team;
 
 class scoreController extends Controller
 {
@@ -20,7 +24,7 @@ class scoreController extends Controller
     {
         $games = auth()->user()->adjudicator()->first()->games()->where('enabled' , '1')->get();
 
-        return view('score.index',['games' => $games ]);
+        return view('game.score.index',['games' => $games ]);
     }
 
     /**
@@ -66,7 +70,7 @@ class scoreController extends Controller
                 }
             }
         }
-        return redirect()->route('score');
+        return redirect()->route('score.score',$game_id);
     }
 
     /**
@@ -100,10 +104,10 @@ class scoreController extends Controller
                 
             }
         }
-        return view('score.show',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores ,'percentage' => $percentage]);
+        return view('game.score.show',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores ,'percentage' => $percentage]);
     }
 
-    public function show_list($game_id)
+    public function show_adjudicator_score_list($game_id)
     {
         $game_name = auth()->user()->adjudicator()->first()->games()->find($game_id)->name;
         $titles = auth()->user()->adjudicator()->first()->games()->find($game_id)->score_titles()->get();
@@ -125,7 +129,59 @@ class scoreController extends Controller
                 
             }
         }
-        return view('score.list',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores]);
+        return view('game.score.adjudicator_list',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores]);
+    }
+
+    public function show_admin_score_list($game_id)
+    {
+        $game = auth()->user()->games()->find($game_id);
+        $game_name = $game->name;
+        $titles = $game->score_titles()->get();
+        $teams = $game->teams()->get();
+        $adjudicators = $game->adjudicators()->get();
+        $scores = [];
+            
+        foreach($teams as $team_value){
+            $sum = 0; //隊伍總成績
+            foreach($titles as $title_value){
+                $title_sum = 0; 
+                foreach ($adjudicators as $adjudicator) {
+                    $pass = $adjudicator->scores()->where([
+                        'team_id' => $team_value->id,
+                        'score_titles_id' => $title_value->id
+                    ])->first();
+                    if (isset($pass->score)) {
+                        $sum += $pass->score * $title_value->percentage / 100;
+                        $title_sum += $pass->score;
+                        $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = $pass->score;
+                    }else{
+                        $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = 0;
+                    }
+                } 
+                $scores[$team_value->id.'-'.$title_value->id.'-sum'] = $title_sum / $adjudicators->count();
+            }
+            $scores[$team_value->id.'-team_sum'] = $sum / $adjudicators->count();
+        }
+
+        foreach($adjudicators as $adjudicator){
+            foreach($teams as $team_value){
+                $sum = 0;
+                foreach($titles as $title_value){
+                    
+
+                    $pass = $adjudicator->scores()->where([
+                        'team_id' => $team_value->id,
+                        'score_titles_id' => $title_value->id
+                    ])->first();
+                    $sum += $pass->score * $title_value->percentage / 100;
+                    
+
+                }
+                $scores[$adjudicator->id.'-'.$team_value->id.'-sum'] = $sum;
+            }
+        }
+
+        return view('game.score.admin_list',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'adjudicators' => $adjudicators, 'scores' => $scores]);
     }
 
     /**

@@ -9,25 +9,33 @@
                         <x-jet-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('回到主畫面') }}
                     </x-jet-nav-link>
                 </div>
-                @if(Auth::user()->identity()->name = "系統管理員")
+                @if(Auth::user()->identity_id == 1)
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('games') }}" :active="request()->routeIs('games')">
                         {{ __('創建比賽') }}
                     </x-jet-nav-link>
                 </div>
                 @endif
+                @if(Auth::user()->identity_id == 3)
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-jet-nav-link href="{{ route('score') }}" :active="request()->routeIs('score')">
                         {{ __('比賽評分') }}
                     </x-jet-nav-link>
                 </div>
+                @endif
+                @if(Auth::user()->identity_id == 1)
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-jet-nav-link href="{{ route('account') }}" :active="request()->routeIs('account')">
+                        {{ __('帳戶中心') }}
+                    </x-jet-nav-link>
+                </div>
+                @endif
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ml-6">

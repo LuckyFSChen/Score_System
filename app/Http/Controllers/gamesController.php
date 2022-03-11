@@ -34,8 +34,7 @@ class gamesController extends Controller
             'name' => 'required',
 
         ]);
-
-        auth()->user()->games()->create($content);
+        $game = auth()->user()->games()->create($content);
 
         return redirect()->route('games');
     }

@@ -8,7 +8,7 @@
             <div class="mt-4 flex">
                 <form  method="POST" action="{{ route('adjudicator.find',$id) }}">
                     @csrf
-                    <input type="email" class="px-2 py-2 rounded border border-gray-400" placeholder="請輸入評審email..." name="email" id="email">
+                    <input type="text" class="px-2 py-2 rounded border border-gray-400" placeholder="請輸入評審name..." name="name" id="name">
                     <button type="submit" class="ml-4 px-4 py-4 bg-gray-300 rounded">尋找評審並新增</button>
                 </form>
                 <form  method="GET" action="{{ route('adjudicator.create',$id) }}">
@@ -46,10 +46,10 @@
                     <div class="font-semibold text-lg">使用者名稱</div>
                     <div class="font-semibold">{{ $adjudicator->user()->first()->name }}</div>
                 </div>
-                <div class="p-6 ">
+                {{-- <div class="p-6 ">
                     <div class="font-semibold text-lg">Email</div>
                     <div class="font-semibold">{{ $adjudicator->user()->first()->email }}</div>
-                </div>
+                </div> --}}
 
 
                 <div class="">

@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/game/close/{game_id}',[\App\Http\Controllers\gamesController::class,'close_game']
     )->name('game.close');
+    
 
 
     /**
@@ -111,10 +112,20 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/score/{game_id}/show',[\App\Http\Controllers\scoreController::class,'show']
     )->name('score.score');
 
-    Route::get('/score/{game_id}/list',[\App\Http\Controllers\scoreController::class,'show_list']
-    )->name('score.list');
+    Route::get('/score/{game_id}/adjudicator/list',[\App\Http\Controllers\scoreController::class,'show_adjudicator_score_list']
+    )->name('adjudicator_score.list');
 
+    Route::get('/score/{game_id}/admin/list',[\App\Http\Controllers\scoreController::class,'show_admin_score_list']
+    )->name('admin_score.list');
+    
     Route::post('/score/{game_id}/store',[\App\Http\Controllers\scoreController::class,'store'])
     ->name('score.store');
+
+    /**
+     * 帳號管理
+     */
+
+    Route::get('/account_manage',[\App\Http\Controllers\accountController::class,'index'])
+    ->name('account');
 });
 

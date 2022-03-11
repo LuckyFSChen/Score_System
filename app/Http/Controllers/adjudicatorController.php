@@ -40,8 +40,12 @@ class adjudicatorController extends Controller
     }
 
     public function find_adjudicator(Request $request,$game_id){
-        $user = User::where('email',$request->email);
+        $user = User::where('name',$request->name);
+        
         if (isset($user->first()->id)){
+            if($user->first()->identity_id != 3){
+                return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號非評審帳號！');
+            }
             $adjudicator = adjudicator::where('user_id',$user->first()->id);
             if ($adjudicator->count() == 0){
                 $user->first()->adjudicator()->create();
@@ -60,9 +64,11 @@ class adjudicatorController extends Controller
 
     public function register_adjudicator(Request $request,$game_id)
     {
+        if (User::where('name',$request->name)->get()->count() > 0) {
+            return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此名稱已存在！');
+        }
         $content = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required'],
         ]);
         $content['password'] = Hash::make($content['password']);
@@ -82,6 +88,7 @@ class adjudicatorController extends Controller
      */
     public function store($adjudicator,$game_id)
     {
+        
         auth()->user()->games()->find($game_id)->adjudicators()->save($adjudicator);
         return redirect()->route('adjudicator.index',["game_id" => $game_id]);
     }
