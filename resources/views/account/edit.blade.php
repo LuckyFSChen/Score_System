@@ -1,8 +1,9 @@
+
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center">
             <h4 class="font-semi bold text-2xl text-gray-800 leading-tight">
-                {{ __('比賽列表 > 比賽資訊') }}
+                {{ __('帳戶中心 > 修改資訊') }}
 
             </h4>
         </div>
@@ -18,11 +19,14 @@
                     </ul>
                 </div>
             @endif
-            <form method="POST" action="{{ route('game.edit',$id) }}">
+            <form method="POST" action="{{ route('account.edit',$id) }}">
                 @csrf
                 <div>
-                    <x-jet-label for="name" value="{{ __('比賽名稱') }}" />
-                    <x-jet-input id="name" class="block mt-2 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                    <x-jet-label for="name" value="{{ __('會員名稱') }}" />
+                    <x-jet-input id="name" class="block mt-2 w-full" type="text" name="name" :value="$user->name" required autofocus />
+                    
+                    <x-jet-label for="email" value="{{ __('email') }}" />
+                    <x-jet-input id="email" class="block mt-2 w-full" type="email" name="email" :value="$user->email" required autofocus />
                 </div>
 
 

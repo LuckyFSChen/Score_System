@@ -127,5 +127,11 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('/account_manage',[\App\Http\Controllers\accountController::class,'index'])
     ->name('account');
+    Route::get('/account/edit/{id}',[\App\Http\Controllers\accountController::class,'edit_page'])
+    ->name('account.edit_page');
+    Route::post('/account/edit/{id}',[\App\Http\Controllers\accountController::class,'edit'])
+    ->name('account.edit');
+    Route::post('/account/destroy/{id}',[\App\Http\Controllers\accountController::class,'destroy'])
+    ->name('account.destroy');
 });
 
