@@ -20,7 +20,8 @@ class TeamsImport implements ToModel, WithHeadingRow
     {
         return new team([
             'game_id' => $this->game_id,
-            'serial_num' => $row['serial'],
+            'serial_num' => $row['serial_num'],
+            'report_num' => $row['report_num'],
             'name' => $row['name']
         ]);
     }
