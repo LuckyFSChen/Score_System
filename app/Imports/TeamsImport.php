@@ -42,6 +42,7 @@ class TeamsImport implements ToCollection, WithHeadingRow
                     }
                 }
                 if($key != 'serial_num' && $key != 'name' && $key != 'report_num'){
+                    $value = empty($value) ? "" : $value;
                     $team->team_details_datas()->create([
                         'content' => $value,
                         'team_details_title_id' => $details_id[$row_n]
