@@ -4,6 +4,7 @@ use Maatwebsite\Excel\Excel;
 
 return [
     'exports' => [
+        'to_ascii'               => false,
 
         /*
         |--------------------------------------------------------------------------

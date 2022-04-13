@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\team;
 use Illuminate\Http\Request;
 use App\Imports\TeamsImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,8 +30,9 @@ class teamController extends Controller
     public function import(Request $request,$game_id){
         auth()->user()->games()->find($game_id)->teams()->delete();
         $teams = auth()->user()->games()->find($game_id)->teams()->get();
+        
         $teamsImportClass = new TeamsImport($game_id);
-        Excel::import($teamsImportClass, $request->file);
+        Excel::import($teamsImportClass, $request->file,'UTF-8');
         return redirect()->route('team.index', ['teams' => $teams,'game_id' => $game_id]);
     }
 
@@ -38,6 +40,11 @@ class teamController extends Controller
         auth()->user()->games()->find($game_id)->teams()->delete();
         $teams = auth()->user()->games()->find($game_id)->teams()->get();
         return redirect()->route('team.index', ['teams' => $teams,'game_id' => $game_id]);
+    }
+
+    public function team_details($id){
+        $team = team::find($id);
+        return view('game.team.team_details',['team_name' => $team->name , 'details' => $team->team_details_datas()->get() ]);
     }
 
     /**

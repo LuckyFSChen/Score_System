@@ -9,5 +9,7 @@ class team_details_title extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = [
+        'name','game_id'
+    ];
 }

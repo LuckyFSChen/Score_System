@@ -47,6 +47,7 @@
                         
                     @endforeach
                     <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-center">總分</th>
+                    <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-center">詳細介紹</th>
                     
                 </tr>
                 </thead>
@@ -66,6 +67,7 @@
                         <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.0001" value="0" readonly>
                         <script> compute({{ $team->id }})</script>
                     </td>
+                    <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400"><a href="{{route('team_details',$team->id)}}" target="_blank">查看詳細資料</a> </td>
                 </tr>
                 @endforeach
                 </tbody>

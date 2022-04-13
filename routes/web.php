@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/games/index',[\App\Http\Controllers\gamesController::class,'index']
     )->name('games');
 
+    Route::get('/team_details/{team_id}',[\App\Http\Controllers\teamController::class,'team_details']
+    )->name('team_details');
+
    
 
     Route::POST('/games/store',[\App\Http\Controllers\gamesController::class,'store']
