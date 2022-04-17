@@ -22,7 +22,6 @@ class TeamsImport implements ToCollection, WithHeadingRow
     public function collection(collection $rows){
         $details_id = array();
         $n = 0;
-        print_r($rows);
         
         foreach ($rows as $row) {
             $serail_num = 0;
