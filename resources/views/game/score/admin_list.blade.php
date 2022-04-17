@@ -25,7 +25,8 @@
                 {
                     extend: 'print',
                     messageTop: '{{ $game_name }}'
-                }
+                },
+                
             ]
         });
         $('#Total2').DataTable({
