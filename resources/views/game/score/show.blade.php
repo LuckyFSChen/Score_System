@@ -14,7 +14,7 @@
         window.onload = function() {
             window.setInterval(() => {
                 document.getElementById("btnSubmit").click()
-            }, 5000);
+            }, 60000);
         }
 
         function compute(team_id){
@@ -22,7 +22,7 @@
             @foreach($percentage as $percentKey => $percentValue)
                 sum += document.getElementById(team_id+"-"+"{{ $percentKey }}").value * {{$percentValue}} / 100
             @endforeach
-            document.getElementById("count_"+team_id).value = sum.toFixed(4);
+            document.getElementById("count_"+team_id).value = sum.toFixed(2);
         }
     </script>
 
@@ -59,12 +59,12 @@
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
                     @foreach($titles as $title)
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.0000" max="100.0000" step="0.0001" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
                             
                         </td>
                     @endforeach
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                        <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.0001" value="0" readonly>
+                        <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" readonly>
                         <script> compute({{ $team->id }})</script>
                     </td>
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400"><a href="{{route('team_details',$team->id)}}" target="_blank">查看詳細資料</a> </td>

@@ -28,6 +28,7 @@
                 @csrf
                 <button class="ml-6 bg-gray-200 rounded px-4" type="submit">清除隊伍</button>
             </form>
+            <a class="ml-6 bg-gray-200 rounded px-4" href="{{ route('team.file') }}" target="_blank" >下載檔案</a>
 
         </div>
     </x-slot>

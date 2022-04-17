@@ -8,6 +8,8 @@ use App\Models\team_datails_data;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+HeadingRowFormatter::default('none');
 
 class TeamsImport implements ToCollection, WithHeadingRow
 {
@@ -20,20 +22,22 @@ class TeamsImport implements ToCollection, WithHeadingRow
     public function collection(collection $rows){
         $details_id = array();
         $n = 0;
+        print_r($rows);
+        
         foreach ($rows as $row) {
             $serail_num = 0;
             $report_num = 0;
             $name = "";
             $team = team::create([
                 'game_id' => $this->game_id,
-                'serial_num' => $row['serial_num'],
-                'report_num' => $row['report_num'],
-                'name' => $row['name']
+                'serial_num' => $row['隊伍編號'],
+                'report_num' => $row['報告順序'],
+                'name' => $row['隊伍名稱']
             ]);
             $row_n = 0;
             foreach ($row as $key => $value) {
                 if($n == 0){
-                    if($key != 'serial_num' && $key != 'name' && $key != 'report_num'){
+                    if($key != '隊伍編號' && $key != '隊伍名稱' && $key != '報告順序'){
                         $details_title = team_details_title::create([
                             'game_id' => $this->game_id,
                             'name' => $key,
@@ -41,7 +45,7 @@ class TeamsImport implements ToCollection, WithHeadingRow
                         array_push($details_id,$details_title->id);
                     }
                 }
-                if($key != 'serial_num' && $key != 'name' && $key != 'report_num'){
+                if($key != '隊伍編號' && $key != '隊伍名稱' && $key != '報告順序'){
                     $value = empty($value) ? "" : $value;
                     $team->team_details_datas()->create([
                         'content' => $value,

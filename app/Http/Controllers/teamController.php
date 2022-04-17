@@ -27,12 +27,17 @@ class teamController extends Controller
         return view('game.team.team', ['teams' => $teams,'game_id' => $game_id]);
     }
 
+    public function example_file()
+    {
+        return response()->download(public_path('/file/example_file.xlsx'));
+    }
+
     public function import(Request $request,$game_id){
         auth()->user()->games()->find($game_id)->teams()->delete();
         $teams = auth()->user()->games()->find($game_id)->teams()->get();
         
         $teamsImportClass = new TeamsImport($game_id);
-        Excel::import($teamsImportClass, $request->file,'UTF-8');
+        Excel::import($teamsImportClass, $request->file);
         return redirect()->route('team.index', ['teams' => $teams,'game_id' => $game_id]);
     }
 

@@ -104,6 +104,9 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::post('/team/clear/{game_id}',[\App\Http\Controllers\teamController::class,'clear_teams']
     )->name('team.clear');
+    
+    Route::get('/team/file',[\App\Http\Controllers\teamController::class,'example_file']
+    )->name('team.file');
 
     /**
      * score

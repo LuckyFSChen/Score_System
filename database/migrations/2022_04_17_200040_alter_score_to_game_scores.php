@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class AlterScoreToGameScores extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('game_scores', function (Blueprint $table) {
+            $table->dropColumn('score');
+        });
+        Schema::table('game_scores', function (Blueprint $table) {
+            $table->decimal('score',6,2);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('game_scores', function (Blueprint $table) {
+            $table->dropColumn('score');
+        });
+        Schema::table('game_scores', function (Blueprint $table) {
+            $table->decimal('score',8,4);
+        });
+    }
+}
