@@ -17,7 +17,7 @@
             <div class="my-4">
                 <span class=" text-2xl font-bold my-2 bg-white/75 block">{{ $detail->team_details_title()->first()->name }}</span>
                 <div class="p-5 border text-xl border-gray-400 bg-gray-500/25 dark:border-gray-700 dark:bg-gray-900">
-                    <p class="mb-2 text-gray-500 dark:text-gray-400">
+                    <p class="mb-2 text-blue-500 dark:text-blue-400">
                         @if (str_contains($detail->content,"http"))
                             <a href="{{ $detail->content }}" target="_blank">{{ $detail->content }}</a>
                         @else
