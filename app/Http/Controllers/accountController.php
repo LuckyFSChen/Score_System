@@ -7,6 +7,7 @@ use App\Models\game;
 use App\Models\score_title;
 use Illuminate\Http\Request;
 use App\Models\user;
+use App\Models\adjudicator_game;
 
 class accountController extends Controller
 {
@@ -46,6 +47,11 @@ class accountController extends Controller
     public function destroy($id){
         $user = User::find($id);
         if($user->identity_id != 1){
+            if($user->identity_id === 3){
+                adjudicator_game::where([
+                    ['adjudicator_id',$user->adjudicator()->first()->id],
+                ])->delete();
+            }
             $user->Delete();
         }
         

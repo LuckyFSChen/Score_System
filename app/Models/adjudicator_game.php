@@ -9,10 +9,12 @@ class adjudicator_game extends Model
 {
     use HasFactory;
 
+    protected $table = 'adjudicator_game';
+
     public function game(){
         return $this->belongsTo('App\Models\game');
     }
     public function adjudicator(){
-        return $this->belongsTo('App\Models\adjudicator');
+        return $this->belongsToMany('App\Models\adjudicator');
     }
 }

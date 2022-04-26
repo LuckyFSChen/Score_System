@@ -26,6 +26,7 @@ class adjudicatorController extends Controller
     public function index($game_id)
     {
         $adjudicators = auth()->user()->games()->find($game_id)->adjudicators()->get();
+        
         return view('game.adjudicator.adjudicator', ['adjudicators' => $adjudicators ,'id' => $game_id]);
     }
 
@@ -136,6 +137,7 @@ class adjudicatorController extends Controller
     public function destroy($game_id,$id)
     {
         $adjudicator = adjudicator::find($id);
+        
         auth()->user()->games()->find($game_id)->adjudicators()->find($adjudicator)->delete();
         return redirect()->route('adjudicator.index',["game_id" => $game_id]);
     }

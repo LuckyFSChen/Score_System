@@ -24,4 +24,6 @@ class adjudicator extends Model
     public function scores(){
         return $this->hasMany('App\Models\game_score');
     }
+
+    
 }
