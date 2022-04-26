@@ -24,7 +24,8 @@ class teamController extends Controller
     public function index($game_id)
     {
         $teams = auth()->user()->games()->find($game_id)->teams()->get();
-        return view('game.team.team', ['teams' => $teams,'game_id' => $game_id]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view('game.team.team', ['teams' => $teams,'game_id' => $game_id,'game_name' => $game_name]);
     }
 
     public function example_file()

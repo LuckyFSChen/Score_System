@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center">
             <h4 class="font-semi bold text-2xl text-gray-800 leading-tight">
-                {{ __('比賽列表 > 成績欄位 > 修改') }}
+                {{ __('比賽列表 > '.$game_name.' > 成績欄位 > 修改') }}
 
             </h4>
         </div>

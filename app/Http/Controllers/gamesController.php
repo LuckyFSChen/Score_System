@@ -41,7 +41,8 @@ class gamesController extends Controller
 
 
     public function editPage($game_id){
-        return view("game.edit", ["id" => $game_id]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view("game.edit", ["id" => $game_id, "game_name" => $game_name]);
 //        return view('game.edit', ['id' => $game_id]);
     }
 

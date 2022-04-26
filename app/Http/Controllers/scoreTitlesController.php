@@ -20,7 +20,8 @@ class scoreTitlesController extends Controller
     public function index($game_id)
     {
         $scores = auth()->user()->games()->find($game_id)->score_titles()->get();
-        return view('game.scoreTitles.score', ['scores' => $scores , 'id' => $game_id]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view('game.scoreTitles.score', ['scores' => $scores , 'id' => $game_id ,'game_name' => $game_name]);
     }
 
     /**

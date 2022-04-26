@@ -26,8 +26,8 @@ class adjudicatorController extends Controller
     public function index($game_id)
     {
         $adjudicators = auth()->user()->games()->find($game_id)->adjudicators()->get();
-        
-        return view('game.adjudicator.adjudicator', ['adjudicators' => $adjudicators ,'id' => $game_id]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view('game.adjudicator.adjudicator', ['adjudicators' => $adjudicators ,'id' => $game_id,'game_name' => $game_name]);
     }
 
     /**
@@ -37,7 +37,8 @@ class adjudicatorController extends Controller
      */
     public function create($game_id)
     {
-        return view('game.adjudicator.create', ['id' => $game_id]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view('game.adjudicator.create', ['id' => $game_id,'game_name' => $game_name]);
     }
 
     public function find_adjudicator(Request $request,$game_id){

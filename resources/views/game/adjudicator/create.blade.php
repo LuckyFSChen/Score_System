@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center">
             <h4 class="font-semi bold text-2xl text-gray-800 leading-tight">
-                {{ __('比賽列表 > 評審人員 > 新增評審人員帳號') }}
+                {{ __('比賽列表 > '.$game_name.' > 評審人員 > 新增評審人員帳號') }}
 
             </h4>
         </div>
@@ -28,7 +28,11 @@
         
                     <div class="mt-4">
                         <x-jet-label for="password" value="{{ __('密碼') }}" />
-                        <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+                        <x-jet-input id="password" class="block mt-1 w-full" name="password" type="password" required autocomplete="new-password" />
+                    </div>
+
+                    <div class="mt-4 block">
+                        <x-jet-input type="checkbox" onclick="ShowHidePw()" />顯示密碼
                     </div>
                 </div>
 
@@ -41,4 +45,16 @@
             </form>
         </div>
     </div>
+    <script>
+
+        function ShowHidePw(){
+            var txtPw = $("#password");
+            if (txtPw.attr("type") == "text"){
+                txtPw.attr("type","password");
+            }else{
+                txtPw.attr("type","text");
+            }
+        }
+
+    </script>
 </x-app-layout>
