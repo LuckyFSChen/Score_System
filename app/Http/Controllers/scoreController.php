@@ -160,7 +160,7 @@ class scoreController extends Controller
                 } 
                 $scores[$team_value->id.'-'.$title_value->id.'-sum'] = round($title_sum / $adjudicators->count(),4);
             }
-            $scores[$team_value->id.'-team_sum'] = $sum / $adjudicators->count();
+            $scores[$team_value->id.'-team_sum'] = round($sum / $adjudicators->count(),4);
         }
 
         foreach($adjudicators as $adjudicator){
