@@ -151,14 +151,14 @@ class scoreController extends Controller
                         'score_titles_id' => $title_value->id
                     ])->first();
                     if (isset($pass->score)) {
-                        $sum += round($pass->score * $title_value->percentage / 100,4);
+                        $sum += $pass->score * $title_value->percentage / 100;
                         $title_sum += $pass->score;
                         $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = $pass->score;
                     }else{
                         $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = 0;
                     }
                 } 
-                $scores[$team_value->id.'-'.$title_value->id.'-sum'] = $title_sum / $adjudicators->count();
+                $scores[$team_value->id.'-'.$title_value->id.'-sum'] = round($title_sum / $adjudicators->count(),4);
             }
             $scores[$team_value->id.'-team_sum'] = $sum / $adjudicators->count();
         }
