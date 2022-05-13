@@ -14,7 +14,7 @@
         window.onload = function() {
             window.setInterval(() => {
                 document.getElementById("btnSubmit").click()
-            }, 60000);
+            }, 300000);
         }
 
         function compute(team_id){
