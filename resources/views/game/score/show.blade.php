@@ -16,7 +16,6 @@
                 document.getElementById("btnSubmit").click()
             }, 300000);
         }
-
         function compute(team_id){
             var sum = 0;
             @foreach($percentage as $percentKey => $percentValue)
@@ -59,12 +58,12 @@
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
                     @foreach($titles as $title)
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.01" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
                             
                         </td>
                     @endforeach
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                        <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" readonly>
+                        <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" required readonly>
                         <script> compute({{ $team->id }})</script>
                     </td>
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400"><a href="{{route('team_details',$team->id)}}" target="_blank">查看詳細資料</a> </td>
@@ -73,7 +72,7 @@
                 </tbody>
             </table>
             <div class="mx-auto flex justify-center">
-                <button type="submit" id="btnSubmit" class="my-6 mx-8 border border-gray-300 p-2 rounded font-bold text-xl bg-green-500 ">儲存/送出</button>
+                <button type="submit" id="btnSubmit" onclick="return confrim('確定儲存隊伍評分嗎')" class="my-6 mx-8 border border-gray-300 p-2 rounded font-bold text-xl bg-green-500 ">儲存/送出</button>
             </div>
             
         </form>
