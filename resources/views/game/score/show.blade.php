@@ -58,7 +58,7 @@
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
                     @foreach($titles as $title)
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.01" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
                             
                         </td>
                     @endforeach
