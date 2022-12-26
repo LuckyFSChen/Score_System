@@ -185,8 +185,6 @@ class scoreController extends Controller
                     
                 }
                 $scores[$team->id.'-'.$title->id.'-sum'] = round($title_sum / $score_num,4);
-                    print_r($scores);
-                    echo "<br><br>";
             }
             $score_num = $adjudicators->count() - adjudicator_team::where([
                 'team_id' => $team->id,
