@@ -86,11 +86,23 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/adjudicator/create/{game_id}',[\App\Http\Controllers\adjudicatorController::class,'create']
     )->name('adjudicator.create');
 
+    Route::get('/adjudicator/edit_team_activate/{game_id}/{adjudicator_id}',[\App\Http\Controllers\adjudicatorController::class,'edit_team_activate']
+    )->name('adjudicator.edit_team_activate');
+
+    Route::get('/adjudicator/open/{game_id}/{adjudicator_id}/{team_id}',[\App\Http\Controllers\adjudicatorController::class,'open_adjudicator_team']
+    )->name('adjudicator.open');
+
+    Route::get('/adjudicator/close/{game_id}/{adjudicator_id}/{team_id}',[\App\Http\Controllers\adjudicatorController::class,'close_adjudicator_team']
+    )->name('adjudicator.close');
+
     Route::post('/adjudicator/store/{game_id}',[\App\Http\Controllers\adjudicatorController::class,'store']
     )->name('adjudicator.store');
 
     Route::post('/adjudicator/register/{game_id}',[\App\Http\Controllers\adjudicatorController::class,'register_adjudicator']
     )->name('adjudicator.register');
+
+    
+
 
     /**
      * team

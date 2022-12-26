@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\game;
+use App\Models\team;
 use App\Models\adjudicator;
+use App\Models\adjudicator_team;
 
 
 class adjudicatorController extends Controller
@@ -28,6 +30,36 @@ class adjudicatorController extends Controller
         $adjudicators = auth()->user()->games()->find($game_id)->adjudicators()->get();
         $game_name = auth()->user()->games()->find($game_id)->name;
         return view('game.adjudicator.adjudicator', ['adjudicators' => $adjudicators ,'id' => $game_id,'game_name' => $game_name]);
+    }
+
+    public function edit_team_activate($game_id,$adjudicator_id){
+        $teamList = team::where('game_id',$game_id)->get();
+        $teamActivate = adjudicator_team::where([['game_id',$game_id],['adjudicator_id',$adjudicator_id]])->get();
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        $adjudicator = adjudicator::find($adjudicator_id);
+        return view('game.adjudicator.TeamList',[
+            'teamList' => $teamList,
+            'teamActivate' => $teamActivate,
+            'game_name'=>$game_name,
+            'adjudicator' => $adjudicator,
+            'game_id' => $game_id
+        ]);
+    }
+
+    public function open_adjudicator_team($game_id,$adjudicator_id,$team_id){
+        $data = [
+            "game_id" => $game_id,
+            "adjudicator_id" => $adjudicator_id,
+            "team_id" => $team_id
+        ];
+        if (adjudicator_team::where([['game_id',$game_id],['team_id',$team_id],['adjudicator_id',$adjudicator_id]])->count() == 0) {
+            adjudicator_team::create($data);
+        }
+        return redirect()->route('adjudicator.edit_team_activate',["game_id" => $game_id,"adjudicator_id" => $adjudicator_id]);
+    }
+    public function close_adjudicator_team($game_id,$adjudicator_id,$team_id){
+        adjudicator_team::where([['game_id',$game_id],['team_id',$team_id],['adjudicator_id',$adjudicator_id]])->delete();
+        return redirect()->route('adjudicator.edit_team_activate',["game_id" => $game_id,"adjudicator_id" => $adjudicator_id]);
     }
 
     /**

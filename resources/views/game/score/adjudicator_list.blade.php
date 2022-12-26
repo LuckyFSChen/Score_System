@@ -41,7 +41,17 @@
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
                     @foreach($titles as $title)
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
+                        @if (\App\Models\adjudicator_team::where([
+                            ['adjudicator_id',auth()->user()->adjudicator()->first()->id],
+                            ['team_id',$team->id]    
+                        ])->count() > 0)
+                            不評分
+                            
+                        @else
                             {{$scores[$team->id.'-'.$title->id]}}
+                        @endif
+                        
+                            
                         </td>
                     @endforeach
                 </tr>

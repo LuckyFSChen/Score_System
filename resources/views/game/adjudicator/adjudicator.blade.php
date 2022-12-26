@@ -52,8 +52,8 @@
                 </div> --}}
 
 
-                <div class="">
-
+                <div class="flex">
+                    <a href="{{ route('adjudicator.edit_team_activate',['game_id'=>$id,'adjudicator_id'=>$adjudicator->id]) }}" class="text-sm p-2 bg-lime-700 text-white rounded ml-4">編輯可評分隊伍</a>
                     <form action="{{ route('adjudicator.destroy',['id'=>$adjudicator->id,'game_id'=>$id]) }}" method="post">
                         @csrf
                         @method('delete')

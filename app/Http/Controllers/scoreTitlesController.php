@@ -71,7 +71,8 @@ class scoreTitlesController extends Controller
     public function edit($game_id,$id)
     {
         $scoreTitle = auth()->user()->games()->find($game_id)->score_titles()->find($id);
-        return view("game.scoreTitles.edit",['scoreTitle' => $scoreTitle]);
+        $game_name = auth()->user()->games()->find($game_id)->name;
+        return view("game.scoreTitles.edit",['scoreTitle' => $scoreTitle,'game_name' => $game_name]);
     }
 
     /**

@@ -116,7 +116,7 @@
                         
                         @endforeach
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                            {{ $scores[$adjudicator->id.'-'.$team->id.'-sum']}}
+                            {{ $scores['sub-'.$adjudicator->id.'-'.$team->id.'-sum']}}
                         </td>
                     </tr>
                 @endforeach

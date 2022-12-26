@@ -58,12 +58,25 @@
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
                     @foreach($titles as $title)
                         <td class="border-b border-gray-100 dark:border-gray-700 px-2 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
-                            
+                            @if(\App\Models\adjudicator_team::where([
+                                ['adjudicator_id',auth()->user()->adjudicator()->first()->id],
+                                ['team_id',$team->id]    
+                            ])->count() > 0)
+                                <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " disabled onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                            @else
+                                <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                            @endif
                         </td>
                     @endforeach
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400">
-                        <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" required readonly>
+                        @if(\App\Models\adjudicator_team::where([
+                            ['adjudicator_id',auth()->user()->adjudicator()->first()->id],
+                            ['team_id',$team->id]    
+                        ])->count() > 0)
+                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center" disabled  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" required readonly>
+                        @else
+                            <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 text-center"  type="number" name="{{ 'count_'.$team->id }}" id="{{ 'count_'.$team->id }}" step="0.01" value="0" required readonly>
+                        @endif
                         <script> compute({{ $team->id }})</script>
                     </td>
                     <td class="border-b border-gray-100 dark:border-gray-700 py-4 text-lg text-center items-center text-gray-500 dark:text-gray-400"><a href="{{route('team_details',$team->id)}}" target="_blank">查看詳細資料</a> </td>
