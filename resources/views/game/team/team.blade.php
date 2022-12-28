@@ -56,9 +56,11 @@
         <table class="border-collapse table-fixed w-full text-sm">
             <thead>
             <tr>
-                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left">隊伍編號</th>
-                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left">報告順序</th>
-                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-200 text-left">隊伍名稱</th>
+                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-400 text-left">隊伍編號</th>
+                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-400 text-left">報告順序</th>
+                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-400 text-left">隊伍名稱</th>
+                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-400 text-left">指導老師</th>
+                <th class="border-b dark:border-gray-600 font-medium px-4 py-4 text-2xl pl-8 pt-0 pb-3 text-gray-400 dark:text-gray-400 text-left">隊長</th>
             </tr>
             </thead>
             <tbody class="bg-white dark:bg-gray-800">
@@ -67,6 +69,8 @@
                 <td class="border-b border-gray-100 dark:border-gray-700 px-4 py-4 text-xl pl-8 text-gray-500 dark:text-gray-400">{{ $team->serial_num }}</td>
                 <td class="border-b border-gray-100 dark:border-gray-700 px-4 py-4 text-xl pl-8 text-gray-500 dark:text-gray-400">{{ $team->report_num }}</td>
                 <td class="border-b border-gray-100 dark:border-gray-700 px-4 py-4 text-xl pl-8 text-gray-500 dark:text-gray-400">{{ $team->name }}</td>
+                <td class="border-b border-gray-100 dark:border-gray-700 px-4 py-4 text-xl pl-8 text-gray-500 dark:text-gray-400">{{ $team->teacher }}</td>
+                <td class="border-b border-gray-100 dark:border-gray-700 px-4 py-4 text-xl pl-8 text-gray-500 dark:text-gray-400">{{ $team->captain }}</td>
             </tr>
             @endforeach
             </tbody>
