@@ -170,8 +170,8 @@ class adjudicatorController extends Controller
      */
     public function destroy($game_id,$id)
     {
-        $adjudicator = adjudicator::find($id);
-        
+        //$adjudicator = adjudicator::find($id);
+        //
         //auth()->user()->games()->find($game_id)->adjudicators()->find($adjudicator)->delete();
         adjudicator_game::where([
             ['adjudicator_id',$id],
