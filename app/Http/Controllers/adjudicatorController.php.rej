@@ -1,0 +1,9 @@
+diff a/app/Http/Controllers/adjudicatorController.php b/app/Http/Controllers/adjudicatorController.php	(rejected hunks)
+@@ -173,6 +173,7 @@
+         $adjudicator = adjudicator::find($id);
+         
+         //auth()->user()->games()->find($game_id)->adjudicators()->find($adjudicator)->delete();
++        adjudicator_game::where([
+             ['adjudicator_id',$id],
+             ['game_id',$game_id]
+         ])->delete();

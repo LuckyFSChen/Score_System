@@ -11,6 +11,8 @@ class adjudicator_game extends Model
 
     protected $table = 'adjudicator_game';
 
+    protected $fillable = ['adjudicator_id','game_id'];
+
     public function game(){
         return $this->belongsTo('App\Models\game');
     }
