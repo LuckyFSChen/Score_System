@@ -27,10 +27,26 @@ class TeamsImport implements ToCollection, WithHeadingRow
             $serail_num = 0;
             $report_num = 0;
             $name = "";
+            $members = "";
+            $member_num = 0;
+            print_r($row);
+            for ($i=1; $i <= 5 ; $i++) { 
+                if(isset($row['隊員'.$i])){
+                    if($member_num == 0){
+                        $members = $row['隊員'.$i];
+                    }else{
+                        $members .= ','.$row['隊員'.$i];
+                    }
+                    $member_num++;
+                }
+            }
             $team = team::create([
                 'game_id' => $this->game_id,
                 'serial_num' => $row['隊伍編號'],
                 'report_num' => $row['報告順序'],
+                'teacher' => isset($row['指導老師']) ? $row['指導老師'] : "",
+                'captain' => isset($row['隊長']) ? $row['隊長'] : "",
+                'member' => $members,
                 'name' => $row['隊伍名稱']
             ]);
             $row_n = 0;

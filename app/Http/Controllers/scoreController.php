@@ -7,6 +7,7 @@ use App\Models\adjudicator;
 use App\Models\game;
 use App\Models\score_title;
 use App\Models\team;
+use App\Models\adjudicator_team;
 
 class scoreController extends Controller
 {
@@ -51,23 +52,29 @@ class scoreController extends Controller
         $str = "";
         foreach($teams as $team_value){
             foreach($titles as $title_value){
-                $score = $request->{$team_value->id.'-'.$title_value->id};
-                $game_score = [
-                    'team_id' => $team_value->id,
-                    'score_titles_id' => $title_value->id,
-                    'score' => $score,
-                ];
+                if (adjudicator_team::where([
+                    ['adjudicator_id',auth()->user()->adjudicator()->first()->id],
+                    ['team_id',$team_value->id]    
+                ])->count() == 0) {
+                    $score = $request->{$team_value->id.'-'.$title_value->id};
+                    $game_score = [
+                        'team_id' => $team_value->id,
+                        'score_titles_id' => $title_value->id,
+                        'score' => $score,
+                    ];
 
-                $pass = auth()->user()->adjudicator()->first()->scores()->where([
-                    'team_id' => $team_value->id,
-                    'score_titles_id' => $title_value->id
-                ])->first();
-                if (isset($pass->score)) {
-                    $pass->score = $score;
-                    $pass->save();
-                }else{
-                    auth()->user()->adjudicator()->first()->scores()->create($game_score);
+                    $pass = auth()->user()->adjudicator()->first()->scores()->where([
+                        'team_id' => $team_value->id,
+                        'score_titles_id' => $title_value->id
+                    ])->first();
+                    if (isset($pass->score)) {
+                        $pass->score = $score;
+                        $pass->save();
+                    }else{
+                        auth()->user()->adjudicator()->first()->scores()->create($game_score);
+                    }
                 }
+                
             }
         }
         return redirect()->route('score.score',$game_id);
@@ -84,6 +91,9 @@ class scoreController extends Controller
         $game_name = auth()->user()->adjudicator()->first()->games()->find($game_id)->name;
         $titles = auth()->user()->adjudicator()->first()->games()->find($game_id)->score_titles()->get();
         $teams = auth()->user()->adjudicator()->first()->games()->find($game_id)->teams()->get();
+        $adjudicator_team = adjudicator_team::where([
+            ['game_id',$game_id]
+        ]);
         $scores = [];
         $percentage = [];
         foreach($titles as $title){
@@ -104,7 +114,7 @@ class scoreController extends Controller
                 
             }
         }
-        return view('game.score.show',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores ,'percentage' => $percentage]);
+        return view('game.score.show',['game_id' => $game_id, 'teams' => $teams, 'adjudicator_team' => $adjudicator_team , 'game_name' => $game_name , 'titles' => $titles, 'scores' => $scores ,'percentage' => $percentage]);
     }
 
     public function show_adjudicator_score_list($game_id)
@@ -140,46 +150,130 @@ class scoreController extends Controller
         $teams = $game->teams()->get();
         $adjudicators = $game->adjudicators()->get();
         $scores = [];
-            
-        foreach($teams as $team_value){
-            $sum = 0; //隊伍總成績
-            foreach($titles as $title_value){
-                $title_sum = 0; 
-                foreach ($adjudicators as $adjudicator) {
-                    $pass = $adjudicator->scores()->where([
-                        'team_id' => $team_value->id,
-                        'score_titles_id' => $title_value->id
-                    ])->first();
-                    if (isset($pass->score)) {
-                        $sum += $pass->score * $title_value->percentage / 100;
-                        $title_sum += $pass->score;
-                        $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = $pass->score;
+        //隊伍總成績
+        foreach ($teams as $team) {
+            $sum = 0;
+            foreach($titles as $title){
+                $title_sum = 0;
+                $score_num = $adjudicators->count();
+                foreach($adjudicators as $adjudicator){
+                    if(adjudicator_team::where([
+                        'team_id' => $team->id,
+                        'game_id' => $game_id,
+                        'adjudicator_id' => $adjudicator->id
+                    ])->count() > 0){
+                        $score_num-=1;
+                        $scores[$adjudicator->id.'-'.$team->id.'-'.$title->id] = "不評分";
                     }else{
-                        $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = 0;
+                        if($adjudicator->scores()->where([
+                            'team_id' => $team->id,
+                            'score_titles_id' => $title->id
+                        ])->count() == 0){
+                            $score_num-=1;
+                            $scores[$adjudicator->id.'-'.$team->id.'-'.$title->id] = "未評分";
+
+                        }else{
+                            $pass = $adjudicator->scores()->where([
+                                'team_id' => $team->id,
+                                'score_titles_id' => $title->id
+                            ])->first();
+                            $scores[$adjudicator->id.'-'.$team->id.'-'.$title->id] = $pass->score;
+                            $sum += $pass->score * $title->percentage / 100;
+                            $title_sum += $pass->score * $title->percentage / 100;
+                        }
                     }
-                } 
-                $scores[$team_value->id.'-'.$title_value->id.'-sum'] = $title_sum / $adjudicators->count();
+                    
+                }
+
+                $scores[$team->id.'-'.$title->id.'-sum'] = $score_num == 0 ? 0 : round($title_sum / $score_num,4);
             }
-            $scores[$team_value->id.'-team_sum'] = $sum / $adjudicators->count();
+            $score_num = $adjudicators->count() - adjudicator_team::where([
+                'team_id' => $team->id,
+                'game_id' => $game_id,
+            ])->count();
+            $scores[$team->id.'-team_sum'] = round($sum / $score_num,4);
         }
 
         foreach($adjudicators as $adjudicator){
-            foreach($teams as $team_value){
+            foreach($teams as $team){
                 $sum = 0;
-                foreach($titles as $title_value){
-                    
-
-                    $pass = $adjudicator->scores()->where([
-                        'team_id' => $team_value->id,
-                        'score_titles_id' => $title_value->id
-                    ])->first();
-                    $sum += $pass->score * $title_value->percentage / 100;
-                    
-
+                foreach($titles as $title){
+                    if(adjudicator_team::where([
+                        'team_id' => $team->id,
+                        'game_id' => $game_id,
+                        'adjudicator_id' => $adjudicator->id
+                    ])->count() != 0){
+                        
+                    }
+                    else{
+                        if($adjudicator->scores()->where([
+                            'team_id' => $team->id,
+                            'score_titles_id' => $title->id
+                        ])->count() == 0){
+                            $sum += 0;
+                        }else{
+                            $pass = $adjudicator->scores()->where([
+                                'team_id' => $team->id,
+                                'score_titles_id' => $title->id
+                            ])->first();
+                            $sum += $pass->score * $title->percentage / 100;
+                        }
+                        
+                    }
                 }
-                $scores[$adjudicator->id.'-'.$team_value->id.'-sum'] = $sum;
+                $scores['sub-'.$adjudicator->id.'-'.$team->id.'-sum'] = $sum;
             }
         }
+
+        
+        // foreach($adjudicators as $adjudicator){
+        //     foreach($teams as $team_value){
+        //         $sum = 0;
+        //         foreach($titles as $title_value){
+
+        //             $pass = $adjudicator->scores()->where([
+        //                 'team_id' => $team_value->id,
+        //                 'score_titles_id' => $title_value->id
+        //             ])->first();
+        //             $sum += $pass->score * $title_value->percentage / 100;
+                    
+
+        //         }
+        //         $scores[$adjudicator->id.'-'.$team_value->id.'-sum'] = $sum;
+        //     }
+        // }
+
+        // foreach($teams as $team_value){
+        //     $sum = 0; //隊伍總成績
+        //     foreach($titles as $title_value){
+        //         $title_sum = 0; 
+        //         foreach ($adjudicators as $adjudicator) {
+        //             $pass = $adjudicator->scores()->where([
+        //                 'team_id' => $team_value->id,
+        //                 'score_titles_id' => $title_value->id
+        //             ])->first();
+        //             if (isset($pass->score)) {
+        //                 $sum += $pass->score * $title_value->percentage / 100;
+        //                 $title_sum += $pass->score;
+        //                 $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = $pass->score;
+        //             }else if(adjudicator_team::where([
+        //                 ['adjudicator_id',$adjudicator->id],
+        //                 ['team_id',$team_value->id]    
+        //             ])->count() > 0){
+        //                 $adjudicator_count -= 1;
+        //                 $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = "不評分";
+        //             }
+        //             else{
+        //                 $scores[$adjudicator->id.'-'.$team_value->id . '-'. $title_value->id] = 0;
+        //             }
+        //         } 
+                
+        //         $scores[$team_value->id.'-'.$title_value->id.'-sum'] = round($title_sum / $adjudicators->count(),4);
+        //     }
+        //     $scores[$team_value->id.'-team_sum'] = round($sum / $adjudicators->count(),4);
+        // }
+
+        
 
         return view('game.score.admin_list',['game_id' => $game_id, 'teams' => $teams , 'game_name' => $game_name , 'titles' => $titles, 'adjudicators' => $adjudicators, 'scores' => $scores]);
     }

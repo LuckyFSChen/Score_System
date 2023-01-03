@@ -10,7 +10,7 @@ class team extends Model
     use HasFactory;
 
     protected $fillable =[
-        'game_id','serial_num','report_num','name'
+        'game_id','serial_num','report_num','name','teacher','captain','member'
     ];
 
     public function game(){
