@@ -8,7 +8,22 @@
 
         </div>
     </x-slot>
-
+    <style>
+        table tbody {
+            display:block;
+            height: 500px;
+            overflow-y:scroll;
+        }
+        table thead, tbody tr {
+            display:table;
+            width:100%; 
+            table-layout:fixed;
+        }
+        table thead {
+            width: calc( 100% - 1em )
+        }
+      
+    </style>
     <script>
         
         window.onload = function() {
