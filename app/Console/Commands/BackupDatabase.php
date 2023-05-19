@@ -3,9 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-
+use Symfony\Component\Process\Exception\ProcessFailedException;
 class BackupDatabase extends Command
 {
     /**
@@ -21,7 +20,6 @@ class BackupDatabase extends Command
      * @var string
      */
     protected $description = 'Backup the database';
-
     protected $process;
     /**
      * Create a new command instance.
@@ -31,13 +29,19 @@ class BackupDatabase extends Command
     public function __construct()
     {
 	    parent::__construct();
-	    $file_name = date('Y-m-d-H:i:s') . '-' . config('database.connections.mysql.database') . '.sql';
-	    $this->process = new Process(sprintf('mysqldump -u %s --password=%s %s > %s --no-tablespaces',
-config('database.connections.mysql.username'),
-config('database.connections.mysql.password'),
-config('database.connections.mysql.database'),
-storage_path('backups/' . $file_name)
-));
+	    $backupPath = storage_path('backups/' . date('Y-m-d-H:i:s') . '-' . config('database.connections.mysql.database') . '.sql');
+
+$command = [
+    'mysqldump',
+    '-u', config('database.connections.mysql.username'),
+    '--password=' . config('database.connections.mysql.password'),
+    config('database.connections.mysql.database'),
+    '--result-file=' . $backupPath,
+    '--no-tablespaces'
+];
+
+$this->process = new Process($command);
+	    
     }
 
     /**
@@ -50,9 +54,9 @@ storage_path('backups/' . $file_name)
 	try {
 		$this->process->mustRun();
 		$this->info('The backup has been proceed successfully.');
-
-	}catch (ProcessFailedException $ex){
-		$this->error($ex);
+	} catch (ProcessFailedException $exception){
+		$this->error($exception);
+		//$this->error('The backup process has been failed.');
 	}
     }
 }
