@@ -31,6 +31,8 @@
                         <x-jet-input id="password" class="block mt-1 w-full" name="password" type="password" required autocomplete="new-password" />
                     </div>
 
+                
+
                     <div class="mt-4 block">
                         <x-jet-input type="checkbox" onclick="ShowHidePw()" />顯示密碼
                     </div>

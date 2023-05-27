@@ -31,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'account',
         'email',
         'password',
+        'user_id'
     ];
 
     /**
@@ -75,4 +76,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scoreTitles(){
         return $this->hasMany('App\Models\score_title');
     }
+
+    
+    public function userCreateAdjudicator(){
+        return $this->hasMany('App\Models\User');
+    }
+    
 }

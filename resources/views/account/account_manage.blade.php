@@ -25,10 +25,10 @@
                         <div class="flex justify-center">
                         <a class="text-sm p-2 bg-gray-200 rounded ml-4 bg-blue-400 text-white" href="{{ route('account.edit_page',$user->id) }}">修改資訊</a>
 
-                            <form method="post" class="" action="{{ route('account.destroy',$user->id) }}">
+                            {{-- <form method="post" class="" action="{{ route('account.destroy',$user->id) }}">
                                 @csrf
                                 <button class="text-sm p-2 bg-gray-200 rounded ml-4 bg-red-400 text-white" type="submit">移除帳號</button>
-                            </form>
+                            </form> --}}
                         </div>
                         
                     </td>

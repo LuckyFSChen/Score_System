@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\adjudicator;
 use App\Models\game;
 use App\Models\score_title;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\adjudicator_game;
@@ -17,16 +18,20 @@ class accountController extends Controller
     }
 
 
-    public function index()
-    {
-        $users = User::where('identity_id' ,'!=',1)->get();
 
+    public function index()
+    {   
+        // $users = User::where('identity_id' ,'!=',1)->get();
+
+        $users=auth()->user()->userCreateAdjudicator()->get();
         return view('account.account_manage',['users' => $users]);
+       
     }
+
     public function edit_page($id)
     {
         $user = User::find($id);
-
+        
         return view('account.edit',['id' => $id,'user'=>$user]);
     }
     public function edit(Request $request,$id)
@@ -36,6 +41,7 @@ class accountController extends Controller
             $content = $request->validate([
                 'name' => ['required', 'string', 'max:255', 'unique:users'],
                 'email' => ['required', 'string', 'email', 'max:255'],
+                
              ]);
             $user->update($content);
         }

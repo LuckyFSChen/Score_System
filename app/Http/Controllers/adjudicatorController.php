@@ -75,23 +75,27 @@ class adjudicatorController extends Controller
     }
 
     public function find_adjudicator(Request $request,$game_id){
+ 
+        $id=auth()->user()->id;
         $user = User::where('name',$request->name);
         
-        if (isset($user->first()->id)){
-            if($user->first()->identity_id != 3){
-                return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號非評審帳號！');
-            }
-            $adjudicator = adjudicator::where('user_id',$user->first()->id);
-            if ($adjudicator->count() == 0){
-                $user->first()->adjudicator()->create();
-            }
-            $adjudicator = adjudicator::where('user_id',$user->first()->id)->first();
+        if($user->first()->user_id == $id){
+            if (isset($user->first()->id)){
+                if($user->first()->identity_id != 3){
+                    return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號非評審帳號！');
+                }
+                $adjudicator = adjudicator::where('user_id',$user->first()->id);
+                if ($adjudicator->count() == 0){
+                    $user->first()->adjudicator()->create();
+                }
+                $adjudicator = adjudicator::where('user_id',$user->first()->id)->first();
 
-            if (empty($adjudicator->games()->find($game_id))){
-                $this->store($adjudicator,$game_id);
-                return redirect()->route('adjudicator.index',["game_id" => $game_id]);
-            }else{
-                return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號已是當場比賽評審！');
+                if (empty($adjudicator->games()->find($game_id))){
+                    $this->store($adjudicator,$game_id);
+                    return redirect()->route('adjudicator.index',["game_id" => $game_id]);
+                }else{
+                    return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','此帳號已是當場比賽評審！');
+                }
             }
         }
         return redirect()->route('adjudicator.index',["game_id" => $game_id])->with('notice','查無此帳號');

@@ -27,6 +27,9 @@
                     
                     <x-jet-label for="email" value="{{ __('email') }}" />
                     <x-jet-input id="email" class="block mt-2 w-full" type="email" name="email" :value="$user->email" required autofocus />
+
+                    
+                   
                 </div>
 
 
