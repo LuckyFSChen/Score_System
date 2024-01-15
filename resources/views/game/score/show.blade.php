@@ -83,7 +83,18 @@
                             ])->count() > 0)
                                 <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " disabled onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
                             @else
-                                <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                                <input class="max-w-md border rounded border-gray-300 min-w-24 w-full px-1 " onchange="compute({{ $team->id }})" oninput="validateScore(this)" type="number" name="{{ $team->id.'-'.$title->id }}" id="{{ $team->id.'-'.$title->id }}" required placeholder="輸入 0 - 100" min="0.00" max="100.00" step="0.01" value="{{ $scores[$team->id.'-'.$title->id] }}" id="">
+                                <script>
+                                    function validateScore(input) {
+                                        var scoreValue = parseFloat(input.value);
+                                        // 檢查是否超過 100
+                                        if (scoreValue > 100) {
+                                            alert("成績只能在 0 到 100 之間。請檢查並重新輸入。");
+                                            // 將該欄位的值設定為 100
+                                            input.value = 100;
+                                        }
+                                    }
+                                </script>
                             @endif
                         </td>
                     @endforeach
@@ -104,8 +115,36 @@
                 </tbody>
             </table>
             <div class="mx-auto flex justify-center">
-                <button type="submit" id="btnSubmit" onclick="return confrim('確定儲存隊伍評分嗎')" class="my-6 mx-8 border border-gray-300 p-2 rounded font-bold text-xl bg-green-500 ">儲存/送出</button>
+                <button type="button" id="btnSubmit" onclick="checkAndSubmit()" class="my-6 mx-8 border border-gray-300 p-2 rounded font-bold text-xl bg-green-500 ">儲存/送出</button>
             </div>
+
+            <script>
+                function checkAndSubmit() {
+                    // 檢查是否有成績是預設值（0.00）
+                    var hasDefaultScores = false;
+
+                    var scoreInputs = document.querySelectorAll('input[type="number"]');
+                    scoreInputs.forEach(function(input) {
+                        var scoreValue = parseFloat(input.value);
+                        if (scoreValue === 0) {
+                            hasDefaultScores = true;
+                        }
+                    });
+
+                    // 如果有預設值，顯示提醒視窗
+                    if (hasDefaultScores) {
+                        var confirmMsg = "還有欄位沒有填到，確定要儲存隊伍評分嗎？";
+                        if (confirm(confirmMsg)) {
+                            // 如果確定，提交表單
+                            document.getElementById('form').submit();
+                        }
+                    } else {
+                        // 如果沒有預設值，直接提交表單
+                        document.getElementById('form').submit();
+                        return confirm('確定儲存隊伍評分嗎?');
+                    }
+                }
+            </script>
             
         </form>
     </div>
